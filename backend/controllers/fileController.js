@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const util = require("util");
 const unlikeFile = util.promisify(fs.unlink);
 
-const { uploadFile } = require("../s3");
+const { uploadFile, getAllFiles, getFileStream } = require("../s3");
 
 const fileController = {
   // POST /images
@@ -16,6 +16,19 @@ const fileController = {
 
     await unlikeFile(file.path);
     res.send({ imagePath: `/images/${result.Key}` });
+  },
+  // GET /images
+  getAllFiles: async (req, res) => {
+    const contents = await getAllFiles();
+
+    return res.json(contents.map(content => content.Key));
+  },
+  // GET /images/:key
+  getImageByKey: async (req, res) => {
+    const { key } = req.params;
+    const readStream = getFileStream(key);
+
+    readStream.pipe(res);
   },
 };
 

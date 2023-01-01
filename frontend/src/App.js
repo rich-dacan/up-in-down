@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "./api";
 import "./App.css";
+import { TbCloudComputing } from "react-icons/tb";
 import imageService from "./services/imageService";
 
 function App() {
@@ -32,6 +33,10 @@ function App() {
 
   return (
     <div className="container">
+      <h1>
+        {" "}
+        Up in down <TbCloudComputing style={{ marginLeft: "20px" }} />
+      </h1>
       <form onSubmit={submit} className="form">
         <input
           onChange={fileSelected}
@@ -46,7 +51,7 @@ function App() {
 
       <div className="image__container">
         {imageKeys?.map(key => (
-          <div key={key}>
+          <div key={key} className="image__wrapper">
             <img
               src={`http://localhost:3333/images/${key}`}
               alt={key}
